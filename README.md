@@ -63,7 +63,7 @@ Please try to make commits as often and concise as possible to allow us to follo
   
 ### How to submit the code  
   
-Please clone this repo to a public Github repo that does not contain an obvious name (to avoid other candidates from copying it). Just choose a couple of random dictionary words and name your repo with them :-)  
+Please clone this repo to a **private** Github repo. Add the recruiting manager as a collaborater on the repo once finished.
   
 The GitHub repo should contain:  
  - All the code (both for exploration and the models) and the commits history showing the process you followed  
