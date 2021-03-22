@@ -63,7 +63,7 @@ Please try to make commits as often and concise as possible to allow us to follo
   
 ### How to submit the code  
   
-Please clone this repo to a **private** Github repo. Add the recruiting manager as a collaborater on the repo once finished.
+Please clone this repo to a **private** Github repo. Add the recruiting manager as a collaborator on the repo once finished.
   
 The GitHub repo should contain:  
  - All the code (both for exploration and the models) and the commits history showing the process you followed  
