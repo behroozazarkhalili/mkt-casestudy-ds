@@ -9,7 +9,6 @@ def get_feature_engineered_data(config_path: str):
     with open(config_path, "r") as jsonfile:
         config = json.load(jsonfile)
     print("Read successful")
-    print(config)
 
     # read the data
     df = get_csv_gz(config.get("unlabeled_data_path"))
@@ -89,3 +88,6 @@ def get_feature_engineered_data(config_path: str):
     fe_df.to_csv(config.get("feature_engineered_data_path"), index=False)
 
     return fe_df
+
+
+get_feature_engineered_data("config_files/config.json")
