@@ -207,3 +207,20 @@ class EDA(object):
             self.get_cat_num_features()
 
         return
+
+    def get_eda_df(self):
+        """
+        apply all the eda methods to the dataframe
+        :return: dataframe with all the eda methods applied on.
+        """
+        self.remove_missing_value()
+        self.remove_correlated_features()
+        self.remove_almost_zero_numerical_features()
+        self.remove_highly_variable_categorical_features()
+
+        # Write the final dataframe to a csv file.
+        self.get_cat_num_features()
+        self.df = self.df[self.categorical_cols + self.numerical_cols]
+        self.df.to_csv(self.config.get("final_data_path"), index=False)
+
+
