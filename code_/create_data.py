@@ -90,4 +90,7 @@ def get_feature_engineered_data(config_path: str):
     return fe_df
 
 
-get_feature_engineered_data("config_files/config.json")
+# run the feature engineering process.
+if __name__ == "__main__":
+    fe_df = get_feature_engineered_data("config_files/config.json")
+    print(fe_df.head())

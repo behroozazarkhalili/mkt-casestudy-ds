@@ -224,3 +224,6 @@ class EDA(object):
         self.df.to_csv(self.config.get("final_data_path"), index=False)
 
 
+if __name__ == "__main__":
+    eda = EDA(config_path="config_files/config.json", eda_config_path="config_files/eda_config.json")
+    eda.get_eda_df()
