@@ -166,3 +166,44 @@ class EDA(object):
             self.get_cat_num_features()
 
         return zero_pct_df
+
+    def remove_highly_variable_categorical_features(self, is_drop=True):
+        """
+        get information regarding categorical features in a dataframe which are enjoying high sub-categories.
+        :param is_drop: if True, the method will drop the categorical features with high number of sub-categories.
+        :return:
+        """
+        self.get_cat_num_features()
+
+        for cat_col in self.categorical_cols:
+            if cat_col != "customer_id":
+                # Replace the subcategories freq_pct of which is less than categorical_pct_threshold.
+                # Get the dataframe including the information regarding the frequency of each subcategory.
+                freq_df = self.df[cat_col].value_counts(normalize=True).reset_index().rename({"index": "category", cat_col: 'freq'}, axis=1)
+
+                # Keep the subcategories which are more than categorical_pct_threshold and convert them to  alist.
+                categories = freq_df[freq_df['freq'] >= self.categorical_pct_threshold]["category"].tolist()
+
+                # If Categories is not empty, replace the subcategories with a specific sub-category whose freq_pct is the least value grater than categorical_pct_threshold.
+                if len(categories) > 0:
+                    self.df.loc[~self.df[cat_col].isin(categories), cat_col] = freq_df["category"].tolist()[len(categories)]
+
+                # Otherwise, drop that column.
+                else:
+                    self.df.drop(cat_col, axis=1, inplace=True)
+                    self.categorical_cols.remove(cat_col)
+
+        # Get the dataframe including each column and the number of subcategories in it.
+        num_categories_df = self.df[self.categorical_cols].apply(lambda col: len(col.unique())).reset_index().rename(
+            {"index": "column_name", 0: 'num_categories'}, axis=1)
+
+        # Get the column names of the columns with more than num_categories_threshold subcategories.
+        to_drop = num_categories_df[num_categories_df['num_categories'] >= self.num_categories_threshold]['column_name'].tolist()
+        to_drop.remove("customer_id")
+
+        # Drop the columns if number_categories of it is grater than the num_categories_threshold.
+        if is_drop and len(to_drop) > 0:
+            self.df.drop(to_drop, axis=1, inplace=True)
+            self.get_cat_num_features()
+
+        return
