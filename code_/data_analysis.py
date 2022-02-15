@@ -143,5 +143,26 @@ class EDA(object):
 
         return collinear_df
 
+    def remove_almost_zero_numerical_features(self, is_drop=True) -> pd.DataFrame:
+        """
+        get information regarding almost zero numerical features of a dataframe.
+        :param: is_drop: if True, the method will drop the columns enjoying more than zero_pct_threshold zero values.
+        :return: dataframe with almost zero numerical features information.
+        """
+        self.get_cat_num_features()
 
+        # Get the dataframe including each column and the percentage of zero values in it.
+        zero_pct_df = self.df[self.numerical_cols].apply(lambda x: (x == 0).sum() / len(x)).reset_index().rename({"index": "column_name", 0: 'zero_pct'}, axis=1)
 
+        # Write the dataframe to a csv file.
+        zero_pct_df.to_csv(self.config.get("zero_pct_path"), index=False)
+
+        # Get the column names of the columns with more than zero_pct_threshold zero values.
+        to_drop = zero_pct_df[zero_pct_df['zero_pct'] >= self.zero_pct_threshold]['column_name'].tolist()
+
+        # Drop the columns with more than zero_pct_threshold zero values if is_drop is True.
+        if is_drop:
+            self.df.drop(to_drop, axis=1, inplace=True)
+            self.get_cat_num_features()
+
+        return zero_pct_df
