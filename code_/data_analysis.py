@@ -99,3 +99,49 @@ class EDA(object):
         # Save the figure
         plt.savefig(self.config.get("correlation_plot_path"))
 
+    def remove_correlated_features(self, is_drop=True) -> pd.DataFrame:
+        """
+        get information regarding correlated features of a dataframe.
+        :param: is_drop: if True, the method will drop the correlated features.
+        :return: dataframe with correlated features information.
+        """
+        corr_matrix = self.df.corr()
+
+        # Extract the upper triangle of the correlation matrix
+        upper = corr_matrix.where(np.triu(np.ones(corr_matrix.shape), k=1).astype(np.bool))
+
+        # Select the features with correlations above the threshold
+        # Need to use the absolute value
+        to_drop = [column for column in upper.columns if any(upper[column].abs() > self.correlation_threshold)]
+
+        # Dataframe to hold correlated pairs
+        collinear_df = pd.DataFrame(columns=['drop_feature', 'corr_feature', 'corr_value'])
+
+        # Iterate through the columns to drop to record pairs of correlated features
+        for column in to_drop:
+            # Find the correlated features
+            corr_features = list(upper.index[upper[column].abs() > self.correlation_threshold])
+
+            # Find the correlated values
+            corr_values = list(upper[column][upper[column].abs() > self.correlation_threshold])
+            drop_features = [column for _ in range(len(corr_features))]
+
+            # Record the information (need a temp df for now)
+            temp_df = pd.DataFrame.from_dict({'drop_feature': drop_features,
+                                              'corr_feature': corr_features,
+                                              'corr_value': corr_values})
+
+            # Add to dataframe
+            collinear_df = pd.concat([collinear_df, temp_df], ignore_index=True)
+
+        collinear_df.to_csv(self.config.get("correlated_features_path"), index=False)
+        to_drop = collinear_df['drop_feature'].tolist()
+
+        if is_drop and len(to_drop) > 0:
+            self.df.drop(to_drop, axis=1, inplace=True)
+            self.get_cat_num_features()
+
+        return collinear_df
+
+
+
