@@ -65,4 +65,37 @@ class EDA(object):
 
         return missing_value_df
 
+    def corr_plot(self):
+        """
+        plot correlation matrix of a dataframe.
+        :return:
+        """
+
+        # Evaluate correlation matrix
+        corr_matrix_plot = self.df.corr()
+
+        # Write correlation matrix to a csv file.
+        corr_matrix_plot.to_csv(self.config.get("correlation_matrix_path"), index=False)
+
+        # Plot correlation matrix.
+        f, ax = plt.subplots(figsize=(20, 16))
+
+        # Diverging colormap
+        cmap = sns.diverging_palette(220, 10, as_cmap=True)
+        # Draw the heatmap with a color bar
+        sns.heatmap(corr_matrix_plot, cmap=cmap, center=0, linewidths=.25, cbar_kws={"shrink": 0.6})
+
+        # Set the ylabels
+        ax.set_yticks([x + 0.5 for x in list(range(corr_matrix_plot.shape[0]))])
+        ax.set_yticklabels(list(corr_matrix_plot.index), size=int(400 / corr_matrix_plot.shape[0]))
+
+        # Set the xlabels
+        ax.set_xticks([x + 0.5 for x in list(range(corr_matrix_plot.shape[1]))])
+        ax.set_xticklabels(list(corr_matrix_plot.columns), size=int(400 / corr_matrix_plot.shape[1]))
+
+        # Set the title
+        plt.title("Correlation Plot", size=14)
+
+        # Save the figure
+        plt.savefig(self.config.get("correlation_plot_path"))
 
