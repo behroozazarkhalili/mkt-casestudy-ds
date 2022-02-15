@@ -28,3 +28,11 @@ class EDA(object):
 
         self.df[self.categorical_cols] = self.df[self.categorical_cols].astype('str')
         self.df[self.numerical_cols] = self.df[self.numerical_cols].astype('float')
+
+    # Get the categorical nad numerical features of a dataframe.
+    def get_cat_num_features(self):
+        self.categorical_cols = [col for col in self.df.columns if col.startswith(("number_", "most_frequent_", "customer_")) or col.endswith("_frequency")]
+        self.numerical_cols = [col for col in self.df.columns if col not in self.categorical_cols]
+        return
+
+
