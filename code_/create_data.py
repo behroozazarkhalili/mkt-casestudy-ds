@@ -85,7 +85,7 @@ def get_feature_engineered_data(config_path: str):
     # save the feature-engineered dataframe to a csv file.
     df_columns = df.columns[1:]
     g_df_columns = g_df.columns
-    final_df = g_df[[column for column in g_df_columns if column not in df_columns]]
-    final_df.to_csv(config.get("feature_engineered_data_path"), index=False)
+    fe_df = g_df[[column for column in g_df_columns if column not in df_columns]]
+    fe_df.to_csv(config.get("feature_engineered_data_path"), index=False)
 
-    return final_df
+    return fe_df
