@@ -1,0 +1,5 @@
+{
+  "unlabeled_data_path": "data/machine_learning_challenge_order_data.csv.gz",
+  "labeled_data_path": "data/machine_learning_challenge_labeled_data.csv.gz",
+  "feature_engineered_data_path": "data/feature_engineered_data.csv"
+}
