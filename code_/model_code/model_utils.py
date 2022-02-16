@@ -5,11 +5,22 @@ from code_.data_code.data_utils import get_csv_gz
 
 
 def create_dir(file_name: str):
+    """
+
+    :param: file_name: The file name the directory of which should be created.
+    :return:
+    """
     if not os.path.exists(file_name):
         os.makedirs(os.path.dirname(file_name), exist_ok=True)
 
 
 def save_to_csv(report: pd.DataFrame, report_save_path: str):
+    """
+
+    :param: report: Pandas dataframe of the report.
+    :param: report_save_path: The path where the report should be saved.
+    :return:
+    """
     create_dir(report_save_path)
     report.to_csv(report_save_path, index=False)
 
