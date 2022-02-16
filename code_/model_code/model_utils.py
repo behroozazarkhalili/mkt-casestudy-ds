@@ -39,7 +39,7 @@ def get_labeled_data(config_path: str, model_type: str) -> pd.DataFrame:
             if col_type in ["category", "object", "int64", "int32"]:
                 df_final[col] = df_final[col].astype('category')
 
-    elif model_type in ["catboost", "deepctr", "node"]:
+    elif model_type in ["catboost", "tabular"]:
         for col in eda_df.columns:
             col_type = df_final[col].dtype.name
             if col_type in ["category", "object", "int64", "int32"]:
