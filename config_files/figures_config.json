@@ -1,0 +1,4 @@
+{
+  "initial_correlation_plot_path": "figures/initial_correlation_plot.pdf",
+  "final_correlation_plot_path": "figures/final_correlation_plot.pdf"
+}

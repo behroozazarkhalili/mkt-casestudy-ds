@@ -6,13 +6,17 @@ import seaborn as sns
 
 
 class EDA(object):
-    def __init__(self, config_path: str, eda_config_path: str):
+    def __init__(self, config_path: str, eda_config_path: str, figures_config_path: str):
         with open(config_path, "r") as jsonfile:
             self.config = json.load(jsonfile)
         print("Read successful")
 
         with open(eda_config_path, "r") as jsonfile:
             self.eda_config = json.load(jsonfile)
+        print("Read successful")
+
+        with open(figures_config_path, "r") as jsonfile:
+            self.figures_config = json.load(jsonfile)
         print("Read successful")
 
         self.df_path = self.config.get("feature_engineered_data_path")
@@ -53,7 +57,7 @@ class EDA(object):
         missing_value_df = missing_value_df.sort_values(by='missing_pct', ascending=False)
 
         # Write the missing value information to a csv file.
-        missing_value_df.to_csv(self.config.get("missing_value_df_path"), index=False)
+        missing_value_df.to_csv(self.config.get("missing_value_features_path"), index=False)
 
         # Get the columns including more than missing_value_pct_threshold missing values.
         to_drop = missing_value_df[missing_value_df['missing_pct'] >= self.missing_value_pct_threshold]['column_name'].tolist()
@@ -65,7 +69,7 @@ class EDA(object):
 
         return missing_value_df
 
-    def corr_plot(self):
+    def corr_plot(self, path):
         """
         plot correlation matrix of a dataframe.
         :return:
@@ -97,7 +101,7 @@ class EDA(object):
         plt.title("Correlation Plot", size=14)
 
         # Save the figure
-        plt.savefig(self.config.get("correlation_plot_path"))
+        plt.savefig(path)
 
     def remove_correlated_features(self, is_drop=True) -> pd.DataFrame:
         """
@@ -155,7 +159,7 @@ class EDA(object):
         zero_pct_df = self.df[self.numerical_cols].apply(lambda x: (x == 0).sum() / len(x)).reset_index().rename({"index": "column_name", 0: 'zero_pct'}, axis=1)
 
         # Write the dataframe to a csv file.
-        zero_pct_df.to_csv(self.config.get("zero_pct_path"), index=False)
+        zero_pct_df.to_csv(self.config.get("zero_pct_features_path"), index=False)
 
         # Get the column names of the columns with more than zero_pct_threshold zero values.
         to_drop = zero_pct_df[zero_pct_df['zero_pct'] >= self.zero_pct_threshold]['column_name'].tolist()
@@ -174,36 +178,39 @@ class EDA(object):
         :return:
         """
         self.get_cat_num_features()
+        print("-----------------------------------------------------")
+        print(self.categorical_cols)
 
         for cat_col in self.categorical_cols:
             if cat_col != "customer_id":
-                # Replace the subcategories freq_pct of which is less than categorical_pct_threshold.
-                # Get the dataframe including the information regarding the frequency of each subcategory.
-                freq_df = self.df[cat_col].value_counts(normalize=True).reset_index().rename({"index": "category", cat_col: 'freq'}, axis=1)
 
-                # Keep the subcategories which are more than categorical_pct_threshold and convert them to  alist.
-                categories = freq_df[freq_df['freq'] >= self.categorical_pct_threshold]["category"].tolist()
+                print(cat_col)
+                print("----------------------------------------------------")
 
-                # If Categories is not empty, replace the subcategories with a specific sub-category whose freq_pct is the least value grater than categorical_pct_threshold.
-                if len(categories) > 0:
-                    self.df.loc[~self.df[cat_col].isin(categories), cat_col] = freq_df["category"].tolist()[len(categories)]
+                if len(self.df[cat_col].unique()) > self.num_categories_threshold:
+                    # Replace the subcategories freq_pct of which is less than categorical_pct_threshold.
+                    # Get the dataframe including the information regarding the frequency of each subcategory.
+                    freq_df = self.df[cat_col].value_counts(normalize=True).reset_index().rename({"index": "category", cat_col: 'freq'}, axis=1)
 
-                # Otherwise, drop that column.
-                else:
-                    self.df.drop(cat_col, axis=1, inplace=True)
-                    self.categorical_cols.remove(cat_col)
+                    # Keep the subcategories which are more than categorical_pct_threshold and convert them to  alist.
+                    categories = freq_df[freq_df['freq'] >= self.categorical_pct_threshold]["category"].tolist()
 
-        # Get the dataframe including each column and the number of subcategories in it.
-        num_categories_df = self.df[self.categorical_cols].apply(lambda col: len(col.unique())).reset_index().rename(
-            {"index": "column_name", 0: 'num_categories'}, axis=1)
+                    print(freq_df)
+                    print("----------------------------------------------------")
 
-        # Get the column names of the columns with more than num_categories_threshold subcategories.
-        to_drop = num_categories_df[num_categories_df['num_categories'] >= self.num_categories_threshold]['column_name'].tolist()
-        to_drop.remove("customer_id")
+                    print(categories)
+                    print("----------------------------------------------------")
+                    print("----------------------------------------------------")
 
-        # Drop the columns if number_categories of it is grater than the num_categories_threshold.
-        if is_drop and len(to_drop) > 0:
-            self.df.drop(to_drop, axis=1, inplace=True)
+                    # If Categories is not empty, replace the subcategories with a specific sub-category whose freq_pct is the least value grater than categorical_pct_threshold.
+                    if len(categories) > 0:
+                        self.df.loc[~self.df[cat_col].isin(categories), cat_col] = freq_df["category"].tolist()[len(categories)]
+
+                    # Otherwise, drop that column.
+                    else:
+                        if is_drop:
+                            self.df.drop(cat_col, axis=1, inplace=True)
+
             self.get_cat_num_features()
 
         return
@@ -214,16 +221,27 @@ class EDA(object):
         :return: dataframe with all the eda methods applied on.
         """
         self.remove_missing_value()
+        # Plot the initial dataframe correlation matrix.
+        self.corr_plot(self.figures_config.get("initial_correlation_plot_path"))
+
+        # Do EDA operations on the dataframe.
         self.remove_correlated_features()
         self.remove_almost_zero_numerical_features()
         self.remove_highly_variable_categorical_features()
 
-        # Write the final dataframe to a csv file.
+        # Reorder the columns of fina dataframe..
         self.get_cat_num_features()
         self.df = self.df[self.categorical_cols + self.numerical_cols]
+
+        # Plot the final dataframe correlation matrix.
+        self.corr_plot(self.figures_config.get("final_correlation_plot_path"))
+
+        # Write the final dataframe to a csv file.
         self.df.to_csv(self.config.get("final_data_path"), index=False)
 
 
 if __name__ == "__main__":
-    eda = EDA(config_path="config_files/config.json", eda_config_path="config_files/eda_config.json")
+    eda = EDA(config_path="config_files/config.json",
+              eda_config_path="config_files/eda_config.json",
+              figures_config_path="config_files/figures_config.json")
     eda.get_eda_df()

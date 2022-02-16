@@ -1,6 +1,6 @@
 {
   "missing_value_pct_threshold": 0.6,
-  "correlation_threshold": 0.95,
+  "correlation_threshold": 0.9,
   "categorical_pct_threshold": 0.01,
   "num_categories_threshold": 50,
   "zero_pct_threshold": 0.9
