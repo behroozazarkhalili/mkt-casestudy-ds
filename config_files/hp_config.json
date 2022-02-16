@@ -1,10 +1,12 @@
 {
   "lightgbm": {
     "study_path": "hp_files/lightgbm/lightgbm_study.pkl",
-    "csv_path": "hp_files/lightgbm/lightgbm_study.csv"
+    "csv_path": "hp_files/lightgbm/lightgbm_study.csv",
+    "best_params_path": "hp_files/lightgbm/lightgbm_best_params.json"
   },
   "catboost": {
     "study_path": "hp_files/catboost/catboost_study.pkl",
-    "csv_path": "hp_files/catboost/catboost_study.csv"
+    "csv_path": "hp_files/catboost/catboost_study.csv",
+    "best_params_path": "hp_files/catboost/catboost_best_params.json"
   }
 }
