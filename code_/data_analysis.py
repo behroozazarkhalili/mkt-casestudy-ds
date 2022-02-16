@@ -82,7 +82,7 @@ class EDA(object):
         corr_matrix_plot.to_csv(self.config.get("correlation_matrix_path"), index=False)
 
         # Plot correlation matrix.
-        f, ax = plt.subplots(figsize=(20, 16))
+        f, ax = plt.subplots(figsize=(40, 32))
 
         # Diverging colormap
         cmap = sns.diverging_palette(220, 10, as_cmap=True)
@@ -91,11 +91,11 @@ class EDA(object):
 
         # Set the ylabels
         ax.set_yticks([x + 0.5 for x in list(range(corr_matrix_plot.shape[0]))])
-        ax.set_yticklabels(list(corr_matrix_plot.index), size=int(400 / corr_matrix_plot.shape[0]))
+        ax.set_yticklabels(list(corr_matrix_plot.index), size=int(320 / corr_matrix_plot.shape[0]))
 
         # Set the xlabels
         ax.set_xticks([x + 0.5 for x in list(range(corr_matrix_plot.shape[1]))])
-        ax.set_xticklabels(list(corr_matrix_plot.columns), size=int(400 / corr_matrix_plot.shape[1]))
+        ax.set_xticklabels(list(corr_matrix_plot.columns), size=int(320 / corr_matrix_plot.shape[1]))
 
         # Set the title
         plt.title("Correlation Plot", size=14)
