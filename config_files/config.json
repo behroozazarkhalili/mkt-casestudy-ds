@@ -8,5 +8,5 @@
   "zero_pct_features_path": "data/zero_pct_features.csv",
   "initial_num_categories_features_path": "data/initial_num_categories_features.csv",
   "final_num_categories_features_path": "data/final_num_categories_features.csv",
-  "final_data_path": "data/final_data.csv"
+  "eda_data_path": "data/eda_data.csv"
 }

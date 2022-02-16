@@ -243,7 +243,7 @@ class EDA(object):
         self.corr_plot(self.figures_config.get("final_correlation_plot_path"))
 
         # Write the final dataframe to a csv file.
-        self.df.to_csv(self.config.get("final_data_path"), index=False)
+        self.df.to_csv(self.config.get("eda_data_path"), index=False)
 
 
 if __name__ == "__main__":
