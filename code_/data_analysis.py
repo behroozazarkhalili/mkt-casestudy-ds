@@ -181,6 +181,9 @@ class EDA(object):
         print("-----------------------------------------------------")
         print(self.categorical_cols)
 
+        initial_num_categories_df = self.df[self.categorical_cols].apply(lambda col: len(col.unique())).reset_index().rename({"index": "column_name", 0: 'num_categories'}, axis=1)
+        initial_num_categories_df.to_csv(self.config.get("initial_num_categories_features_path"), index=False)
+
         for cat_col in self.categorical_cols:
             if cat_col != "customer_id":
 
@@ -211,7 +214,10 @@ class EDA(object):
                         if is_drop:
                             self.df.drop(cat_col, axis=1, inplace=True)
 
-            self.get_cat_num_features()
+        self.get_cat_num_features()
+
+        final_num_categories_df = self.df[self.categorical_cols].apply(lambda col: len(col.unique())).reset_index().rename({"index": "column_name", 0: 'num_categories'}, axis=1)
+        final_num_categories_df.to_csv(self.config.get("final_num_categories_features_path"), index=False)
 
         return
 
