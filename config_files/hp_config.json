@@ -2,21 +2,11 @@
   "lightgbm": {
     "study_path": "hp_files/lightgbm/lightgbm_study.pkl",
     "csv_path": "hp_files/lightgbm/lightgbm_study.csv",
-    "num_trials": 50
+    "num_trials": 1
   },
   "catboost": {
     "study_path": "hp_files/catboost/catboost_study.pkl",
     "csv_path": "hp_files/catboost/catboost_study.csv",
-    "num_trials": 50
-  },
-  "node": {
-    "study_path": "hp_files/node/node_study.pkl",
-    "csv_path": "hp_files/node/node_study.csv",
-    "num_trials": 50
-  },
-  "tabnet": {
-    "study_path": "hp_fies/tabnet/tabnet_study.pkl",
-    "csv_path": "hp_files/tabnet/tabnet_study.csv",
-    "num_trials": 50
+    "num_trials": 1
   }
 }
