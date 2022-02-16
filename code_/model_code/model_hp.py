@@ -182,3 +182,62 @@ def cb_objective(trial, df_final: pd.DataFrame, gpu_enabled: bool = False):
 
     return score
 
+
+def run_hp(objective: Callable, config_path: str, hp_config_path: str, model_type: str, num_trials: int):
+    """
+    Run the hyperparameter optimization.
+    :param: objective:  The objective function.
+    :param: config_path: The path to the configuration file.
+    :param: hp_config_path: The path to the hyperparameter configuration file.
+    :param: model_type:  The type of model to use.
+    :param: num_trials:  The number of trials to run.
+    :return:
+    """
+    # Read the hp_config file
+    with open(hp_config_path, "r") as jsonfile:
+        hp_config = json.load(jsonfile)
+    print("Read hp_config file successfully")
+
+    # Extract the fields of the hp_config file.
+    study_path = hp_config.get(model_type).get("study_path")
+    csv_path = hp_config.get(model_type).get("csv_path")
+    best_params_path = hp_config.get(model_type).get("best_params_path")
+
+    # Get the required dataframe.
+    df_final = get_labeled_data(config_path, model_type)
+
+    # Set the logging level of optuna.
+    optuna.logging.set_verbosity(optuna.logging.ERROR)
+
+    # Create the new objective.
+    new_objective = partial(objective, df_final=df_final)
+
+    # Create the study.
+    study = optuna.create_study(direction="maximize", sampler=TPESampler(seed=1234))
+
+    start_time = time()
+
+    # Run and optimize the study.
+    study.optimize(new_objective, n_trials=num_trials, show_progress_bar=False, gc_after_trial=True)
+
+    running_time = time() - start_time
+    print("running time: ", running_time)
+
+    # Create the output directory.
+    create_dir(hp_config.get(model_type).get("csv_path"))
+
+    # Save the study trials_dataframe to a csv file.
+    study.trials_dataframe().to_csv(csv_path, index=False)
+
+    # Save the study to a pickle file.
+    joblib.dump(study, study_path)
+
+    best_params = study.best_trial.params
+    with open(best_params_path, "w") as outfile:
+        json.dump(best_params, outfile)
+
+
+if __name__ == "__main__":
+    run_hp(lgb_objective, "config_files/config.json", "config_files/hp_config.json", "lightgbm", 50)
+    run_hp(cb_objective, "config_files/config.json", "config_files/hp_config.json", "catboost", 50)
+
