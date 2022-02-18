@@ -245,7 +245,7 @@ class EDA(object):
         self.df = self.df[self.categorical_cols + self.numerical_cols]
 
         # Plot the final dataframe correlation matrix.
-        self.corr_plot(self.figures_config.get("final_correlation_plot_path"))
+        self.corr_plot(self.figures_config.get("final_correlation_plot_path"), self.config.get("final_correlation_matrix_path"))
 
         # Write the final dataframe to a csv file.
         self.df.to_csv(self.config.get("eda_data_path"), index=False)
