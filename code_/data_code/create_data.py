@@ -35,7 +35,7 @@ def get_feature_engineered_data(config_path: str):
     # get the statistics of delivery_fee for each customer.
     g_df["min_delivery_fee"], g_df["max_delivery_fee"], g_df["total_delivery_fee"], g_df["avg_delivery_fee"] = zip(*g_df["delivery_fee"].map(get_list_statistics))
 
-    # get the statistics of amount_paid for each customer
+    # get the statistics of amount_paid for each customer.
     g_df["min_amount_paid"], g_df["max_amount_paid"], g_df["total_amount_paid"], g_df["avg_amount_paid"] = zip(*g_df["amount_paid"].map(get_list_statistics))
 
     # get the statistics of voucher_amount for each customer.

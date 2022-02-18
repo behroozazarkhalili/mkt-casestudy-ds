@@ -158,6 +158,7 @@ def cb_objective(trial, df_final: pd.DataFrame, gpu_enabled: bool = False):
                                       eval_metric='AUC:hints=skip_train~false',
                                       metric_period=100,
                                       use_best_model=True,
+                                      random_seed=1234,
                                       **params)
         # Fit the model.
         model.fit(x_train, y_train, cat_features=categorical_features_indices,
@@ -238,6 +239,6 @@ def run_hp(objective: Callable, config_path: str, hp_config_path: str, model_typ
 
 
 if __name__ == "__main__":
-    run_hp(lgb_objective, "config_files/config.json", "config_files/hp_config.json", "lightgbm", 50)
+    # run_hp(lgb_objective, "config_files/config.json", "config_files/hp_config.json", "lightgbm", 50)
     run_hp(cb_objective, "config_files/config.json", "config_files/hp_config.json", "catboost", 50)
 

@@ -39,6 +39,7 @@ class EDA(object):
         self.numerical_cols = [col for col in self.df.columns if col not in self.categorical_cols]
         return
 
+    # Remove the columns with missing values more than the threshold.
     def remove_missing_value(self, is_drop=True) -> pd.DataFrame:
         """
         get information regarding missing values of each column of a dataframe.
@@ -69,6 +70,7 @@ class EDA(object):
 
         return missing_value_df
 
+    # Plot the correlation between numerical features.
     def corr_plot(self, path):
         """
         plot correlation matrix of a dataframe.
@@ -103,6 +105,7 @@ class EDA(object):
         # Save the figure
         plt.savefig(path)
 
+    # Remove the column with the correlation values more than the threshold.
     def remove_correlated_features(self, is_drop=True) -> pd.DataFrame:
         """
         get information regarding correlated features of a dataframe.
@@ -147,6 +150,7 @@ class EDA(object):
 
         return collinear_df
 
+    # Remove the column with the zero values more than the threshold.
     def remove_almost_zero_numerical_features(self, is_drop=True) -> pd.DataFrame:
         """
         get information regarding almost zero numerical features of a dataframe.
@@ -171,10 +175,11 @@ class EDA(object):
 
         return zero_pct_df
 
+    # Remove or Update the categorical columns with high cardinality of categories.
     def remove_highly_variable_categorical_features(self, is_drop=True):
         """
         get information regarding categorical features in a dataframe which are enjoying high sub-categories.
-        :param is_drop: if True, the method will drop the categorical features with high number of sub-categories.
+        :param: is_drop: if True, the method will drop the categorical features with high number of sub-categories.
         :return:
         """
         self.get_cat_num_features()
