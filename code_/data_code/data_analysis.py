@@ -71,7 +71,7 @@ class EDA(object):
         return missing_value_df
 
     # Plot the correlation between numerical features.
-    def corr_plot(self, path):
+    def corr_plot(self, fig_path, csv_path):
         """
         plot correlation matrix of a dataframe.
         :return:
@@ -81,7 +81,7 @@ class EDA(object):
         corr_matrix_plot = self.df.corr()
 
         # Write correlation matrix to a csv file.
-        corr_matrix_plot.to_csv(self.config.get("correlation_matrix_path"), index=False)
+        corr_matrix_plot.to_csv(csv_path, index=False)
 
         # Plot correlation matrix.
         f, ax = plt.subplots(figsize=(40, 32))
@@ -103,7 +103,7 @@ class EDA(object):
         plt.title("Correlation Plot", size=14)
 
         # Save the figure
-        plt.savefig(path)
+        plt.savefig(fig_path)
 
     # Remove the column with the correlation values more than the threshold.
     def remove_correlated_features(self, is_drop=True) -> pd.DataFrame:
@@ -233,7 +233,7 @@ class EDA(object):
         """
         self.remove_missing_value()
         # Plot the initial dataframe correlation matrix.
-        self.corr_plot(self.figures_config.get("initial_correlation_plot_path"))
+        self.corr_plot(self.figures_config.get("initial_correlation_plot_path"), self.config.get("initial_correlation_matrix_path"))
 
         # Do EDA operations on the dataframe.
         self.remove_correlated_features()
