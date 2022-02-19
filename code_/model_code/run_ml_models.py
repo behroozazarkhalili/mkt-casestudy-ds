@@ -93,7 +93,6 @@ def training(config_path: str, hp_config_path: str, model_type: str, number_of_f
             model.fit(x_train, y_train, eval_set=(x_eval, y_eval), feature_name='auto', categorical_feature="auto",
                       callbacks=[lgb.early_stopping(stopping_rounds=100), lgb.log_evaluation(period=100)])
 
-
         elif model_type == "catboost":
             # Define the catboost model.
             model = cb.CatBoostClassifier(auto_class_weights="Balanced",
