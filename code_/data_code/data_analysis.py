@@ -10,17 +10,17 @@ class EDA(object):
         # Load the config file.
         with open(config_path, "r") as jsonfile:
             self.config = json.load(jsonfile)
-        print("Read successful")
+        print("Reading Config file is successful")
 
         # Load the EDA config file.
         with open(eda_config_path, "r") as jsonfile:
             self.eda_config = json.load(jsonfile)
-        print("Read successful")
+        print("Reading EDA Config File is successful")
 
         # Load the figures config file.
         with open(figures_config_path, "r") as jsonfile:
             self.figures_config = json.load(jsonfile)
-        print("Read successful")
+        print("Reading Figures Config File is successful")
 
         # Initialize the class parameters.
         self.df_path = self.config.get("feature_engineered_data_path")
