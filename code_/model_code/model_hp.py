@@ -239,6 +239,5 @@ def run_hp(objective: Callable, config_path: str, hp_config_path: str, model_typ
 
 
 if __name__ == "__main__":
-    # run_hp(lgb_objective, "config_files/config.json", "config_files/hp_config.json", "lightgbm", 50)
+    run_hp(lgb_objective, "config_files/config.json", "config_files/hp_config.json", "lightgbm", 50)
     run_hp(cb_objective, "config_files/config.json", "config_files/hp_config.json", "catboost", 50)
-
