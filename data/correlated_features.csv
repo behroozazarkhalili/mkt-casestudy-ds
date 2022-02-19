@@ -1,4 +1,4 @@
 drop_feature,corr_feature,corr_value
 avg_delivery_fee,min_delivery_fee,0.9219983255891581
-avg_amount_paid,min_amount_paid,0.9159793528557258
-avg_voucher_amount,min_voucher_amount,0.9421016149737865
+avg_amount_paid,min_amount_paid,0.9159793528314196
+avg_voucher_amount,min_voucher_amount,0.9421016149737867
