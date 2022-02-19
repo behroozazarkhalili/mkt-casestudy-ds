@@ -1,0 +1,10 @@
+{
+  "max_depth": 3,
+  "num_iterations": 8,
+  "boosting_type": "dart",
+  "tree_learner": "voting",
+  "learning_rate": 0.1146844805190286,
+  "num_leaves": 2,
+  "bagging_fraction": 0.7659352829306761,
+  "feature_fraction": 0.5448477454369689
+}
