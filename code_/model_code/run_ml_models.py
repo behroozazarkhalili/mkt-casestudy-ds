@@ -1,9 +1,10 @@
 import json
 from time import time
+
 import catboost as cb
+import lightgbm as lgb
 import numpy as np
 import pandas as pd
-import lightgbm as lgb
 from sklearn.metrics import classification_report, confusion_matrix, roc_auc_score
 from sklearn.model_selection import StratifiedKFold, train_test_split
 
@@ -127,7 +128,7 @@ def training(config_path: str, hp_config_path: str, model_type: str, number_of_f
         y_pred = model.predict(x_test)
 
         # Summarize the fit of the model
-        report = pd.DataFrame(classification_report(y_test, y_pred, output_dict=True)).transpose()
+        report = pd.DataFrame(classification_report(y_test, y_pred, output_dict=True)).transpose().reset_index()
         print(report)
 
         # Save the report to a csv file.
