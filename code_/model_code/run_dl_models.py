@@ -21,23 +21,33 @@ def dl_training(config_path: str, model_type: str, number_of_folds: int = 5, max
     :param batch_size: batch size to use for training
     :return:
     """
+
     if model_type in ["tabnet", "node", "category_embedding"]:
         g_model_type = "tabular"
     else:
         raise ValueError(f"Model type: {model_type} is not supported")
 
+    # Get the required dataframe.
     df_final = get_labeled_data(config_path, g_model_type)
 
+    # Drop the columns that are not required.
     df_final.drop(columns=['customer_id'], inplace=True)
     print(df_final.columns)
 
+    # Set the number of folds for the cross-validation.
     n_splits = number_of_folds
+
+    # Set the random state for the reproducibility.
     random_state = 1234
+
+    # Get the StratifiedKFold object.
     cv = StratifiedKFold(n_splits=n_splits, random_state=random_state, shuffle=True)
 
+    # Get the categorical and numerical features.
     cat_features = [col for col in df_final.columns if df_final[col].dtype != 'float64' and col not in ['customer_id', 'is_returning_customer']]
     num_features = [col for col in df_final.columns if df_final[col].dtype == 'float64']
 
+    # Set the model config based on the model type.
     if model_type == 'node':
         model_config = NodeConfig(task="classification", num_layers=4, num_trees=256,
                                   depth=5, embed_categorical=True, learning_rate=1e-3,
@@ -54,26 +64,44 @@ def dl_training(config_path: str, model_type: str, number_of_folds: int = 5, max
     else:
         raise ValueError(f"Model type: {model_type} is not supported")
 
+    # Set the data config.
     data_config = DataConfig(target=['is_returning_customer'], continuous_cols=num_features, categorical_cols=cat_features, )
+
+    # Set the trainer config.
     trainer_config = TrainerConfig(auto_lr_find=False, batch_size=batch_size, max_epochs=max_epochs, auto_select_gpus=False)
+
+    # Set the optimizer config.
     optimizer_config = OptimizerConfig()
 
+    # Create the list to save scores.
     metrics = list()
-    models = []
 
+    # Create the list to save the models.
+    models = list()
+
+    # Iterate over the folds.
     for i, [train_index, test_index] in enumerate(cv.split(df_final[cat_features + num_features], df_final["is_returning_customer"])):
+        # Get the train and test data.
         df_test = df_final.iloc[test_index, :]
         df_train = df_final.iloc[train_index, :]
         y_test = df_test["is_returning_customer"] * 1
 
+        # Create the tabular dl model
         model = TabularModel(data_config=data_config, model_config=model_config, optimizer_config=optimizer_config, trainer_config=trainer_config)
 
+        # Start running the training.
         start = time()
+
+        # Define the weighted loss to handle imbalanced dataset.
         weighted_loss = get_class_weighted_cross_entropy(df_train["is_returning_customer"].values.ravel(), mu=0.1)
+
+        # Fit the model.
         model.fit(train=df_train, loss=weighted_loss)
+
         elapsed_time = time() - start
         print(f"Training time: {elapsed_time}")
 
+        # Get the predictions.
         y_pred = model.predict(df_test)
 
         # Assert prediction column is in the dataframe.
@@ -87,12 +115,17 @@ def dl_training(config_path: str, model_type: str, number_of_folds: int = 5, max
         report_save_path = f"model_files/{model_type}/csv_files/fold_{i}_report.csv"
         save_to_csv(report, report_save_path)
 
+        # Get the AUC score for the fold.
         auc_score = roc_auc_score(y_test, y_pred["prediction"])
         print(auc_score)
 
+        # Add the model of the fold to the list.
         models.append(model)
+
+        # Add the AUC score of the fold to the list.
         metrics.append(auc_score)
 
+    # Save the AUC scores to a csv file.
     auc_df = pd.DataFrame([(i, x) for i, x in enumerate(metrics)], columns=["fold", "auc_score"])
     auc_df.to_csv(f"model_files/{model_type}/csv_files/auc_scores.csv")
 

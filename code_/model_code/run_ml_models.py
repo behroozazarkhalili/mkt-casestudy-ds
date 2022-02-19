@@ -159,11 +159,7 @@ def training(config_path: str, hp_config_path: str, model_type: str, number_of_f
         feature_importance_save_path = f"model_files/{model_type}/csv_files/fold_{i}_feature_importance.csv"
         save_to_csv(fi, feature_importance_save_path)
 
-        # Save the AUC score to a csv file.
-        auc_df = pd.DataFrame([(i, x) for i, x in enumerate(metrics)], columns=["fold", "auc_score"])
-        auc_df.to_csv(f"model_files/{model_type}/csv_files/auc_scores.csv")
-
-        # Add the The model of the fold to the list.
+        # Add the model of the fold to the list.
         models.append(model)
 
         # Add the AUC score of the fold to the list.
@@ -171,6 +167,10 @@ def training(config_path: str, hp_config_path: str, model_type: str, number_of_f
 
         # Add the feature importances of the fold to the list.
         feature_importances.append(feature_importance)
+
+    # Save the AUC score to a csv file.
+    auc_df = pd.DataFrame([(i, x) for i, x in enumerate(metrics)], columns=["fold", "auc_score"])
+    auc_df.to_csv(f"model_files/{model_type}/csv_files/auc_scores.csv")
 
     return models, metrics, feature_importances
 
