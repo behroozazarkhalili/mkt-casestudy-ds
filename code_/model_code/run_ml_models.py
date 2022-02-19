@@ -178,4 +178,7 @@ def training(config_path: str, hp_config_path: str, model_type: str, number_of_f
 
 if __name__ == "__main__":
     training("config_files/config.json", "config_files/hp_config.json", "lightgbm", 5)
+    get_feature_importance_avg("model_files", "lightgbm")
+
     training("config_files/config.json", "config_files/hp_config.json", "catboost", 5)
+    get_feature_importance_avg("model_files", "catboost")
