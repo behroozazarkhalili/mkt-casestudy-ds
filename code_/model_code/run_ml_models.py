@@ -8,7 +8,7 @@ import pandas as pd
 from sklearn.metrics import classification_report, confusion_matrix, roc_auc_score
 from sklearn.model_selection import StratifiedKFold, train_test_split
 
-from code_.model_code.model_utils import save_to_csv, get_labeled_data
+from code_.model_code.model_utils import save_to_csv, get_labeled_data, get_feature_importance_avg
 
 
 def training(config_path: str, hp_config_path: str, model_type: str, number_of_folds: int = 5):
