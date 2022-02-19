@@ -13,7 +13,7 @@ def get_feature_engineered_data(config_path: str) -> pd.DataFrame:
     # Get config file.
     with open(config_path, "r") as jsonfile:
         config = json.load(jsonfile)
-    print("Read successful")
+    print("Reading config file is successful")
 
     # Read the data
     df = get_csv_gz(config.get("unlabeled_data_path"))
