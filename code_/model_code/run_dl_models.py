@@ -8,7 +8,7 @@ from pytorch_tabular.utils import get_class_weighted_cross_entropy
 from sklearn.metrics import classification_report, roc_auc_score
 from sklearn.model_selection import StratifiedKFold
 
-from code_.model_code.model_utils import get_labeled_data, save_to_csv
+from code_.model_code.model_utils import get_labeled_data, save_to_csv, get_feature_importance_avg
 
 
 def dl_training(config_path: str, model_type: str, number_of_folds: int = 5, max_epochs: int = 100, batch_size: int = 1024):
@@ -134,5 +134,10 @@ def dl_training(config_path: str, model_type: str, number_of_folds: int = 5, max
 
 if __name__ == "__main__":
     dl_training("config_files/config.json", "node", 5, 20, 1024)
+    get_feature_importance_avg("model_files", "node")
+
     dl_training("config_files/config.json", "tabnet", 5, 20, 1024)
+    get_feature_importance_avg("model_files", "tabnet")
+
     dl_training("config_files/config.json", "category_embedding", 5, 20, 1024)
+    get_feature_importance_avg("model_files", "category_embedding")
