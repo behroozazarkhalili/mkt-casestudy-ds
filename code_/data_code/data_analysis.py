@@ -7,18 +7,22 @@ import seaborn as sns
 
 class EDA(object):
     def __init__(self, config_path: str, eda_config_path: str, figures_config_path: str):
+        # Load the config file.
         with open(config_path, "r") as jsonfile:
             self.config = json.load(jsonfile)
         print("Read successful")
 
+        # Load the EDA config file.
         with open(eda_config_path, "r") as jsonfile:
             self.eda_config = json.load(jsonfile)
         print("Read successful")
 
+        # Load the figures config file.
         with open(figures_config_path, "r") as jsonfile:
             self.figures_config = json.load(jsonfile)
         print("Read successful")
 
+        # Initialize the class parameters.
         self.df_path = self.config.get("feature_engineered_data_path")
         self.df = pd.read_csv(self.df_path)
         self.missing_value_pct_threshold = self.eda_config.get("missing_value_pct_threshold")
@@ -74,6 +78,8 @@ class EDA(object):
     def corr_plot(self, fig_path, csv_path):
         """
         plot correlation matrix of a dataframe.
+        :param: fig_path: path to save the figure.
+        :param: csv_path: path to save the correlation matrix.
         :return:
         """
 
@@ -229,7 +235,7 @@ class EDA(object):
     def get_eda_df(self):
         """
         apply all the eda methods to the dataframe
-        :return: dataframe with all the eda methods applied on.
+        :return:
         """
         self.remove_missing_value()
         # Plot the initial dataframe correlation matrix.
