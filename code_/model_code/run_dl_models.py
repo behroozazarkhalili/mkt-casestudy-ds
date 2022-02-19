@@ -108,7 +108,7 @@ def dl_training(config_path: str, model_type: str, number_of_folds: int = 5, max
         assert "prediction" in y_pred.columns, "prediction column not found"
 
         # Summarize the fit of the model
-        report = pd.DataFrame(classification_report(y_test, y_pred["prediction"], output_dict=True)).transpose()
+        report = pd.DataFrame(classification_report(y_test, y_pred["prediction"], output_dict=True)).transpose().reset_index()
         print(report)
 
         # Save the report to a csv file.
@@ -134,5 +134,5 @@ def dl_training(config_path: str, model_type: str, number_of_folds: int = 5, max
 
 if __name__ == "__main__":
     dl_training("config_files/config.json", "node", 5, 20, 1024)
-    dl_training("config_files/config.json", "category_embedding", 5, 20, 1024)
     dl_training("config_files/config.json", "tabnet", 5, 20, 1024)
+    dl_training("config_files/config.json", "category_embedding", 5, 20, 1024)
