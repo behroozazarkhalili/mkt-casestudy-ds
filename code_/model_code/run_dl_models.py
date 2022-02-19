@@ -133,6 +133,6 @@ def dl_training(config_path: str, model_type: str, number_of_folds: int = 5, max
 
 
 if __name__ == "__main__":
-    dl_training("config_files/config.json", "node", 5, 2, 1024)
-    dl_training("config_files/config.json", "category_embedding", 5, 2, 1024)
-    dl_training("config_files/config.json", "tabnet", 5, 2, 1024)
+    dl_training("config_files/config.json", "node", 5, 20, 1024)
+    dl_training("config_files/config.json", "category_embedding", 5, 20, 1024)
+    dl_training("config_files/config.json", "tabnet", 5, 20, 1024)
