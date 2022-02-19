@@ -17,9 +17,10 @@ from code_.model_code.model_utils import create_dir, get_labeled_data
 
 def lgb_objective(trial, df_final: pd.DataFrame) -> float:
     """
+    The objective function for LightGBM.
     :param: trail: object to define the hyperparameters.
     :param: df_final: dataframe with the features and the target.
-    :return:
+    :return: score with float type.
     """
     # Set the number of cross-validation split
     n_splits = 5
@@ -93,12 +94,13 @@ def lgb_objective(trial, df_final: pd.DataFrame) -> float:
     return score
 
 
-def cb_objective(trial, df_final: pd.DataFrame, gpu_enabled: bool = False):
+def cb_objective(trial, df_final: pd.DataFrame, gpu_enabled: bool = False) -> float:
     """
+    The objective function for CatBoost.
     :param: trail: object to define the hyperparameters.
     :param: df_final: dataframe with the features and the target.
     :param: gpu_enabled: boolean to enable the GPU.
-    :return:
+    :return: score with the float type
     """
     # Set the number of cross-validation split.
     n_splits = 5

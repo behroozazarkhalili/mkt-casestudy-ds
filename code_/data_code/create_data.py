@@ -4,7 +4,12 @@ import math
 from code_.data.data_utils import get_csv_gz, get_grouped_df, get_number_return, convert_to_datetime, get_list_statistics, get_frequency_info, get_amount_by_special_id
 
 
-def get_feature_engineered_data(config_path: str):
+def get_feature_engineered_data(config_path: str) -> pd.DataFrame:
+    """
+    Get feature engineered data from the data source.
+    :param config_path: Path to the config file.
+    :return: DataFrame with feature engineered data.
+    """
     # Get config file.
     with open(config_path, "r") as jsonfile:
         config = json.load(jsonfile)
