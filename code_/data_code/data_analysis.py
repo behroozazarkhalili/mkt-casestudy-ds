@@ -46,7 +46,7 @@ class EDA(object):
     # Remove the columns with missing values more than the threshold.
     def remove_missing_value(self, is_drop=True) -> pd.DataFrame:
         """
-        get information regarding missing values of each column of a dataframe.
+        Get information regarding missing values of each column of a dataframe.
         the method remove columns enjoying more than missing_value_pct_threshold missing values.
         :param: is_drop: if True, the method will drop the columns enjoying more than missing_value_pct_threshold missing values.
         :return: dataframe with missing values information.
@@ -77,7 +77,7 @@ class EDA(object):
     # Plot the correlation between numerical features.
     def corr_plot(self, fig_path, csv_path):
         """
-        plot correlation matrix of a dataframe.
+        Plot correlation matrix of a dataframe.
         :param: fig_path: path to save the figure.
         :param: csv_path: path to save the correlation matrix.
         :return:
@@ -114,7 +114,7 @@ class EDA(object):
     # Remove the column with the correlation values more than the threshold.
     def remove_correlated_features(self, is_drop=True) -> pd.DataFrame:
         """
-        get information regarding correlated features of a dataframe.
+        Get information regarding correlated features of a dataframe.
         :param: is_drop: if True, the method will drop the correlated features.
         :return: dataframe with correlated features information.
         """
@@ -159,7 +159,7 @@ class EDA(object):
     # Remove the column with the zero values more than the threshold.
     def remove_almost_zero_numerical_features(self, is_drop=True) -> pd.DataFrame:
         """
-        get information regarding almost zero numerical features of a dataframe.
+        Get information regarding almost zero numerical features of a dataframe.
         :param: is_drop: if True, the method will drop the columns enjoying more than zero_pct_threshold zero values.
         :return: dataframe with almost zero numerical features information.
         """
@@ -184,7 +184,7 @@ class EDA(object):
     # Remove or Update the categorical columns with high cardinality of categories.
     def remove_highly_variable_categorical_features(self, is_drop=True):
         """
-        get information regarding categorical features in a dataframe which are enjoying high sub-categories.
+        Get information regarding categorical features in a dataframe which are enjoying high sub-categories.
         :param: is_drop: if True, the method will drop the categorical features with high number of sub-categories.
         :return:
         """
@@ -234,7 +234,7 @@ class EDA(object):
 
     def get_eda_df(self):
         """
-        apply all the eda methods to the dataframe
+        Apply all the eda methods to the dataframe
         :return:
         """
         self.remove_missing_value()
