@@ -175,6 +175,6 @@ def training(config_path: str, hp_config_path: str, model_type: str, number_of_f
     return models, metrics, feature_importances
 
 
-if __name__ == "__main":
+if __name__ == "__main__":
     training("config_files/config.json", "config_files/hp_config.json", "lightgbm", 5)
     training("config_files/config.json", "config_files/hp_config.json", "catboost", 5)

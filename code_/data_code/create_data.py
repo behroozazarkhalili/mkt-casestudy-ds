@@ -1,7 +1,7 @@
 import json
 import math
 
-from code_.data.data_utils import get_csv_gz, get_grouped_df, get_number_return, convert_to_datetime, get_list_statistics, get_frequency_info, get_amount_by_special_id
+from code_.data_code.data_utils import get_csv_gz, get_grouped_df, get_number_return, convert_to_datetime, get_list_statistics, get_frequency_info, get_amount_by_special_id
 
 
 def get_feature_engineered_data(config_path: str) -> pd.DataFrame:
