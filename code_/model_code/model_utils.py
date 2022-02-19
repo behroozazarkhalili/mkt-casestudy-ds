@@ -6,7 +6,7 @@ from code_.data_code.data_utils import get_csv_gz
 
 def create_dir(file_name: str):
     """
-
+    creates a directory if it does not exist.
     :param: file_name: The file name the directory of which should be created.
     :return:
     """
@@ -16,7 +16,7 @@ def create_dir(file_name: str):
 
 def save_to_csv(report: pd.DataFrame, report_save_path: str):
     """
-
+    saves the report to a csv file.
     :param: report: Pandas dataframe of the report.
     :param: report_save_path: The path where the report should be saved.
     :return:
@@ -27,7 +27,7 @@ def save_to_csv(report: pd.DataFrame, report_save_path: str):
 
 def get_labeled_data(config_path: str, model_type: str) -> pd.DataFrame:
     """
-    Reads in the dataframes  and joined them together to get the labeled data.
+    reads in the dataframes and joined them together to get the labeled data.
     :param: config_path: path to the config file
     :return: dataframe with the data
     """
