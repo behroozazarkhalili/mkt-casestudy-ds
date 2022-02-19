@@ -12,7 +12,8 @@ from code_.model_code.model_utils import save_to_csv, get_labeled_data
 
 def training(config_path: str, hp_config_path: str, model_type: str, number_of_folds: int = 5):
     """
-    :param: config_path: The path to the config file
+    This function trains the model and returns the models, metrics, and feature importances.
+    :param: config_path: The path to the config file.
     :param: hp_config_path: The path to the hyperparameter configuration file.
     :param: model_type: The type of model to train.
     :param: number_of_folds: The number of folds to use for cross-validation.
@@ -154,15 +155,21 @@ def training(config_path: str, hp_config_path: str, model_type: str, number_of_f
         fi.columns = ["Features", "Scores"]
         fi.sort_values(by="Scores", ascending=False, inplace=True)
 
+        # Save the feature importances to a csv file.
         feature_importance_save_path = f"model_files/{model_type}/csv_files/fold_{i}_feature_importance.csv"
         save_to_csv(fi, feature_importance_save_path)
 
+        # Save the AUC score to a csv file.
         auc_df = pd.DataFrame([(i, x) for i, x in enumerate(metrics)], columns=["fold", "auc_score"])
-
         auc_df.to_csv(f"model_files/{model_type}/csv_files/auc_scores.csv")
 
+        # Add the The model of the fold to the list.
         models.append(model)
+
+        # Add the AUC score of the fold to the list.
         metrics.append(auc_score)
+
+        # Add the feature importances of the fold to the list.
         feature_importances.append(feature_importance)
 
     return models, metrics, feature_importances
