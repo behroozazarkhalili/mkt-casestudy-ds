@@ -13,6 +13,7 @@ from code_.model_code.model_utils import get_labeled_data, save_to_csv
 
 def dl_training(config_path: str, model_type: str, number_of_folds: int = 5, max_epochs: int = 100, batch_size: int = 1024):
     """
+    This function trains a deep learning model.
     :param: config_path: path to the config file
     :param model_type: name of the model to train
     :param number_of_folds: number of folds to use for cross-validation
