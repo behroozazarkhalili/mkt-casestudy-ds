@@ -1,5 +1,6 @@
 import json
 import os
+
 import pandas as pd
 from code_.data_code.data_utils import get_csv_gz
 
@@ -60,3 +61,34 @@ def get_labeled_data(config_path: str, model_type: str) -> pd.DataFrame:
         raise ValueError(f"Model type: {model_type} is not supported")
 
     return df_final
+
+
+def get_feature_importance_avg(folder_name: str, model_type: str):
+    """
+    Read all feature importance of the same model and return dataframe with the average feature importance
+    :param: folder_name: The name of the folder where the feature importance files are stored.
+    :param: model_type: The type of the model.
+    :return: DataFrame with average feature importance.
+    """
+    # Get all the feature importance files by reading all csv fie starting with 'feature_importance' name.
+    feature_importance_files = [file for file in os.listdir(f"{folder_name}/{model_type}/csv_files") if file.endswith("feature_importance.csv")]
+
+    # If there are any feature importance files.
+    if len(feature_importance_files) > 0:
+        # Read all the feature importance files and store them in a list.
+        feature_importance_list = [pd.read_csv(f"{folder_name}/{model_type}/csv_files/{file}") for file in feature_importance_files]
+
+        # Sort all dataframes in the list by the 'Features' column.
+        feature_importance_list = [df.sort_values(by=['Features']) for df in feature_importance_list]
+
+        # Get the average of all the dataframes 'Scores' column in the list to get the final dataframe.)
+        avg_feature_importance = pd.concat(feature_importance_list, axis=0).groupby('Features').mean().sort_values(by=["Scores"], ascending=False).reset_index()
+
+        avg_feature_importance.to_csv(f"{folder_name}/{model_type}/csv_files/feature_importance_avg.csv", index=False)
+
+        return avg_feature_importance
+
+    # If there are no feature importance files.
+    else:
+        print("There is no file including information about feature importance of the model")
+        return None
