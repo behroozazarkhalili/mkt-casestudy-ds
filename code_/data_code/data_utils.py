@@ -2,7 +2,8 @@ import pandas as pd
 
 
 def get_csv_gz(df_path: str) -> pd.DataFrame:
-    """read a csv.gz file
+    """
+    Read a csv.gz file
     :param: df_path: path to csv.gz file
     :return: dataframe
     """
@@ -11,7 +12,8 @@ def get_csv_gz(df_path: str) -> pd.DataFrame:
 
 
 def get_grouped_df(df: pd.DataFrame, col: str) -> pd.DataFrame:
-    """group dataframe rows into list in Pandas Groupby
+    """
+    Group dataframe rows into list in Pandas Groupby
     :param: df: dataframe
     :param: col: column to group by
     :return: grouped dataframe
@@ -24,14 +26,16 @@ def get_grouped_df(df: pd.DataFrame, col: str) -> pd.DataFrame:
 
 
 def convert_to_datetime(df: pd.DataFrame, col: str) -> pd.DataFrame:
-    """convert a string column to a date column with yyyy-mm-dd format"""
+    """
+    Convert a string column to a date column with yyyy-mm-dd format"""
     assert col in df.columns, f"{col} not in dataframe"
     df[col] = pd.to_datetime(df[col], format="%Y-%m-%d")
     return df
 
 
 def get_diff_between_dates_in_list(x: list) -> list:
-    """ get the difference between consecutive dates
+    """
+    Get the difference between consecutive dates
     :param: x: list of dates
     :return: list of differences
     >>> get_diff_between_dates_in_list([pd.to_datetime('2019-01-01'), pd.to_datetime('2019-01-02'), pd.to_datetime('2019-01-03')])
@@ -42,7 +46,8 @@ def get_diff_between_dates_in_list(x: list) -> list:
 
 
 def get_number_return(x: list, interval: int) -> int:
-    """get the number of return in an interval for a list of dates
+    """
+    Get the number of return in an interval for a list of dates
     :param: x: list of dates
     :param: interval: interval in days
     :return: number of return in interval
@@ -54,7 +59,8 @@ def get_number_return(x: list, interval: int) -> int:
 
 
 def get_list_statistics(x: list) -> tuple:
-    """get the statistics of a list
+    """
+    Get the statistics of a list
     :param: x: list
     :return: tuple of statistics
     >>> get_list_statistics([1, 2, 3, 4, 5])
@@ -64,7 +70,8 @@ def get_list_statistics(x: list) -> tuple:
 
 
 def get_frequency_info(x: list) -> tuple:
-    """get the most frequent item and its frequency in a list
+    """
+    Get the most frequent item and its frequency in a list
     :param: x: list
     :return: tuple of most frequent item and its frequency, and length of unique items.
     >>> get_frequency_info([1.1, 2.2, 3.5, 4, 5, 1.1, 0.2, 3.24, 0.4, 1.1, 5.5])
@@ -75,7 +82,8 @@ def get_frequency_info(x: list) -> tuple:
 
 
 def convert_dtypes(df: pd.DataFrame, columns_dtypes: dict) -> pd.DataFrame:
-    """convert dtypes of columns in a dataframe
+    """
+    Convert dtypes of columns in a dataframe
     :param: df: dataframe
     :param: columns_dtypes: dictionary of columns and dtypes
     :return: dataframe with converted dtypes
@@ -88,7 +96,8 @@ def convert_dtypes(df: pd.DataFrame, columns_dtypes: dict) -> pd.DataFrame:
 
 
 def get_amount_by_special_id(available_special_ids, special_ids_list, amount_paid_list):
-    """get the amount paid by each payment id
+    """
+    Get the amount paid by each payment id
     :param: available_special_ids: list of available special ids
     :param: special_ids_list: list of special ids
     :param: amount_paid_list: list of amounts paid
